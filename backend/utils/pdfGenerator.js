@@ -1,5 +1,4 @@
-import puppeteer from "puppeteer-core";
-import chromium from "chrome-aws-lambda"
+import puppeteer from "puppeteer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
@@ -8,12 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const generatePDF = async (reportData, customerData) => {
-  const browser = await chromium.puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless,
-  });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   const validateValue = (value, normalRange, highRange) => {
@@ -32,7 +26,7 @@ const generatePDF = async (reportData, customerData) => {
           <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
+      margin: 0;  
       padding: 0;
       background-color: #f6f6f6;
     }
