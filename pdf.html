@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f6f6f6;
+    }
+    .container {
+      width: 95%;
+      margin: 10px auto;
+      padding: 20px;
+      background-color: #242038;
+      color: wheat;
+      border: 1px solid white;
+      border-radius: 15px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 5px;
+    }
+    .col {
+      flex: 1;
+    }
+    .details {
+        width: 30%;
+        padding: 20px;
+        border: 1px solid  #242038;
+    }
+    .details2{
+        padding: 20px;
+        border: 1px solid   #242038;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: wheat;
+    }
+    .customer-details {
+      margin-bottom: 20px;
+    }
+    .customer-details p {
+      margin: 5px 0;
+    }
+    .fat-side-effects p {
+      margin: 5px 0;
+    }
+    .fat-side-effects .checked {
+      color: green;
+    }
+    .fat-side-effects .unchecked {
+      color: red;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="customer-details">
+      <p><strong>Name:</strong> John Doe</p>
+      <div class="row">
+        <div class="col">
+          <p><strong>Email:</strong> john.doe@example.com</p>
+        </div>
+        <div class="col">
+          <p><strong>Contact:</strong> 123-456-7890</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p><strong>Age:</strong> 30</p>
+        </div>
+        <div class="col">
+          <p><strong>DOB:</strong> 1995-01-01</p>
+        </div>
+        <div class="col">
+          <p><strong>Height:</strong> 180 cm</p>
+        </div>
+        <div class="col">
+          <p><strong>Weight:</strong> 75 kg</p>
+        </div>
+      </div>
+      <p><strong>Address:</strong> 123 Main St, Anytown, USA</p>
+    </div>
+    <hr />
+
+    <div class="row">
+      <div class="details col">
+        <h1>Body Fat Details</h1>
+        <hr />
+        <p><strong>Weight:</strong> <span style="color: green;">75 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Ideal Weight:</strong> <span style="color: green;">70 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Extra Weight:</strong> <span style="color: yellow;">5 <i class="bi bi-exclamation-triangle"></i> High</span></p>
+        <p><strong>Less Weight:</strong> <span style="color: red;">10 <i class="bi bi-x-circle"></i> At Risk</span></p>
+        <p><strong>Body Fat:</strong> <span style="color: green;">20 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Visceral Fat:</strong> <span style="color: yellow;">15 <i class="bi bi-exclamation-triangle"></i> High</span></p>
+        <p><strong>Resting Metabolism:</strong> <span style="color: green;">1800 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>BMI:</strong> <span style="color: green;">22 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Body Age:</strong> <span style="color: green;">30 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Whole Body Subcutaneous:</strong> <span style="color: green;">20 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Trunk Fat:</strong> <span style="color: yellow;">15 <i class="bi bi-exclamation-triangle"></i> High</span></p>
+        <p><strong>Arm Fat:</strong> <span style="color: green;">10 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Leg Fat:</strong> <span style="color: green;">15 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Skeletal Muscle:</strong> <span style="color: green;">35 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Trunk Muscles:</strong> <span style="color: green;">25 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Arm Muscles:</strong> <span style="color: green;">40 <i class="bi bi-check-circle"></i> Normal</span></p>
+        <p><strong>Leg Muscles:</strong> <span style="color: green;">45 <i class="bi bi-check-circle"></i> Normal</span></p>
+      </div>
+      <div class="details2 col">
+        <h1>Fat Side Effects</h1>
+        <hr />
+        <p><strong>Heart Disease:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>High Blood Pressure:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>High Blood Cholesterol:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Diabetes:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Headache:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Cancer:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Difficulty Breathing in Sleep:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Tired Easily:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Snoring in Sleep:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Stomach Issues:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Menstrual Cycle Issues:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Paralysis:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Body Ache:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Weak Memory:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Darkening of Face:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+        <p><strong>Hairfall:</strong> <i class="bi bi-check-square-fill checked"></i></p>
+      </div>
+    </div>
+    <div class="footer">
+      <p>Generated using Report ProTM</p>
+      <p>Your body fat tracker by PSPM TECHNOLOGIES</p>
+    </div>
+  </div>
+</body>
+</html>
