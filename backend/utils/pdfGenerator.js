@@ -1,4 +1,5 @@
 import puppeteer from "puppeteer";
+import chromium from "chrome-aws-lambda"
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
