@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { requestPasswordReset } from "../services/authService"; // Assuming you have this function
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();

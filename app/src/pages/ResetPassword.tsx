@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { resetPassword } from "../services/authService"; // Assuming you have this function
 
 const ResetPassword = () => {
@@ -8,7 +8,7 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
 
   const getTokenFromUrl = () => {

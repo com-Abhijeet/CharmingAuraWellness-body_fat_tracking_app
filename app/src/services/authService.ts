@@ -1,4 +1,4 @@
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import {UAParser} from "ua-parser-js";
 
 export const handleLogin = async (email: string, password: string) => {
@@ -127,7 +127,7 @@ const getOsType = () => {
 };
 
 const getLocation = async () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (!navigator.geolocation) {
         console.error("Geolocation is not supported by your browser");
         return resolve("Unknown Location");

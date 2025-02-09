@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../services/userService"; // Assuming you have this function
 import Sidebar from "../components/Sidebar";
