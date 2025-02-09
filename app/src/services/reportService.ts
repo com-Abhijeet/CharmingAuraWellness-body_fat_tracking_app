@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { CustomerDetails } from "../types/formTypes";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
@@ -18,6 +19,7 @@ export const createReport = async (customerData : CustomerDetails, reportData : 
     }
 
     const data = await response.json();
+    toast.success(data.message);
     return data;
   } catch (error) {
     console.error("Error creating report:", error);
