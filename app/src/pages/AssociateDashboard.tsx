@@ -11,21 +11,21 @@ import DashboardCustomerStatistics from "../components/DashboardCustomerStatisti
 
 const AssociateDashboard = () => {
   const dispatch = useDispatch();
-  const reports = useSelector(
-    (state: { reports: { reports: Report[] | null } }) => state.reports.reports
-  );
+  // const reports = useSelector(
+  //   (state: { reports: { reports: Report[] | null } }) => state.reports.reports
+  // );
 
   const user = useSelector((state: { user: { user: any } }) => state.user.user);
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     const fetchReportStats = async () => {
       try {
         const data = await fetchStats(user.email);
         dispatch(setStats(data));
-        console.log(data);
+        // console.log(data);
       } catch (error) {
-        console.error("Error fetching report statistics:", error);
+        // console.error("Error fetching report statistics:", error);
       }
     };
 
@@ -33,9 +33,9 @@ const AssociateDashboard = () => {
       try {
         const data = await fetchCustomerStats(user.email);
         dispatch(setCustomerStats(data));
-        console.log(data);
+        // console.log(data);
       } catch (error) {
-        console.error("Error fetching customer statistics:", error);
+        // console.error("Error fetching customer statistics:", error);
       }
     };
 

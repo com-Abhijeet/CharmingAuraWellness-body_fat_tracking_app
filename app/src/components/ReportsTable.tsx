@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Report } from "../types/formTypes";
 import ReportDetailsOverlay from "./ReportsDetailsOverlay";
 import useMediaQuery from "../hooks/useMediaQuery";
+import { toast } from "react-toastify";
 
 interface ReportsTableProps {
   reports: Report[];
@@ -58,13 +59,14 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
 
   const handleDeleteReport = () => {
     // Implement delete report logic here
-    console.log("Delete report ID:", contextMenu?.reportId);
+    // console.log("Delete report ID:", contextMenu?.reportId);
+    toast.error("Deleting report has been disabled!");
     handleCloseContextMenu();
   };
 
   const handleResendEmail = () => {
     // Implement resend report email logic here
-    console.log("Resend email for report ID:", contextMenu?.reportId);
+    // console.log("Resend email for report ID:", contextMenu?.reportId);
     handleCloseContextMenu();
   };
 

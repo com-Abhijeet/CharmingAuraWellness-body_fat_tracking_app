@@ -21,7 +21,6 @@ import Customers from "./pages/Customers";
 import ViewCustomerDetails from "./pages/ViewCustomerDetails";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SecurityBoundary from "./components/SecurityBoundary";
-import Footer from "./components/Footer";
 
 const clientId = import.meta.env.VITE_GOOGLE_OAUTH_CLIENTID;
 

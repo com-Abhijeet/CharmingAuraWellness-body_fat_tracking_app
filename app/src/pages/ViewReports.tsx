@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchReports as fetchReportsService,
@@ -18,7 +18,7 @@ const ViewReports = () => {
   );
 
   const user = useSelector((state: { user: { user: any } }) => state.user.user);
-  console.log(user);
+  // console.log(user);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [sortBy, setSortBy] = useState("createdAt");
@@ -50,7 +50,7 @@ const ViewReports = () => {
       try {
         const data = await fetchStats(user.email);
         dispatch(setStats(data));
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error("Error fetching statistics:", error);
       }

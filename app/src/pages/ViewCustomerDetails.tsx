@@ -11,7 +11,6 @@ import Sidebar from "../components/Sidebar";
 import ReportStatisticsGraph from "../components/ReportStatisticsGraph";
 import CustomerReportComparison from "../components/CustomerReportComparison";
 import { setReports, clearReports } from "../redux/reportsSlice";
-import ReportsTable from "../components/ReportsTable";
 
 const ViewCustomerDetails = () => {
   const { email } = useParams<{ email: string }>();

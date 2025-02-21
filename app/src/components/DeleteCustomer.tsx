@@ -1,7 +1,6 @@
-import React from "react";
-
 const DeleteCustomer = () => {
-  return <div>Delete Customer Component</div>;
+  alert("Deleting has been blocked for now");
+  return <div></div>;
 };
 
 export default DeleteCustomer;

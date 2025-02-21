@@ -97,7 +97,7 @@ const Reports = () => {
       );
       if (response.status === 200) {
         alert("Report submitted successfully");
-        console.log("Report created successfully:", response);
+        // console.log("Report created successfully:", response);
 
         // Clear the form
         setCustomerDetails({
@@ -154,7 +154,7 @@ const Reports = () => {
       }
       navigate("/associate-dashboard");
     } catch (error) {
-      console.error("Error creating report:", error);
+      // console.error("Error creating report:", error);
     }
   };
 

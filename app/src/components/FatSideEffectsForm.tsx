@@ -12,12 +12,12 @@ const FatSideEffectsForm: React.FC<FatSideEffectsFormProps> = ({
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    console.log(`Checkbox ${name} changed to ${checked}`);
+    // console.log(`Checkbox ${name} changed to ${checked}`);
     setFormData((prevData) => ({
       ...prevData,
       [name]: checked,
     }));
-    console.log(`Updated formData:`, { ...formData, [name]: checked });
+    // console.log(`Updated formData:`, { ...formData, [name]: checked });
   };
 
   return (

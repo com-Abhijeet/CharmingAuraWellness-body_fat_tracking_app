@@ -39,7 +39,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    console.log("User logged out");
+    // console.log("User logged out");
     navigate("/login");
   };
 

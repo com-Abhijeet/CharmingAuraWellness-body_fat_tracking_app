@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "../services/customerService";
 import { setCustomers } from "../redux/customersSlice";
@@ -25,7 +25,7 @@ const Customers = () => {
         dispatch(setCustomers(data.customers));
         setTotalPages(data.totalPages);
       } catch (error) {
-        console.error("Error fetching customers:", error);
+        // console.error("Error fetching customers:", error);
       }
     };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { fetchAuthenticatedUser } from "../services/authService";
 import Loading from "./Loading";
 
@@ -12,31 +12,31 @@ interface Props {
 const SecurityBoundary: React.FC<Props> = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const [loading, setLoading] = useState(true); // State to manage loading
 
   useEffect(() => {
-    console.log("SecurityBoundary useEffect called");
+    // console.log("SecurityBoundary useEffect called");
 
     const token = localStorage.getItem("token");
-    console.log("Token:", token);
+    // console.log("Token:", token);
 
     if (!token) {
-      console.log("No token found, redirecting to login");
+      // console.log("No token found, redirecting to login");
       navigate("/login");
       setLoading(false); // Set loading to false after redirecting to login
       return;
     }
 
     const fetchUser = async () => {
-      console.log("Fetching user with token:", token);
+      // console.log("Fetching user with token:", token);
       const result = await fetchAuthenticatedUser(token);
 
       if (result.success) {
-        console.log("User fetched successfully:", result.data);
+        // console.log("User fetched successfully:", result.data);
         dispatch(setUser(result.data));
       } else {
-        console.error("Failed to fetch user:", result.message);
+        // console.error("Failed to fetch user:", result.message);
         localStorage.removeItem("token");
         navigate("/login");
       }
@@ -55,5 +55,3 @@ const SecurityBoundary: React.FC<Props> = ({ children }) => {
 };
 
 export default SecurityBoundary;
-
-

@@ -4,7 +4,6 @@ import { handleLogin, handleGoogleLogin } from "../services/authService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
