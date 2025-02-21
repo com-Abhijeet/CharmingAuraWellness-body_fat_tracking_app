@@ -23,6 +23,7 @@ const FatSideEffectsForm: React.FC<FatSideEffectsFormProps> = ({
   return (
     <div className="fat-side-effects form-container">
       <h2>Fat Side Effects</h2>
+      <hr />
       <div className="form-content grid-container">
         <label className="grid-item">
           <input

@@ -17,6 +17,10 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  gender: {
+    type: String,
+    required: false,
+  },
   height: {
     type: String,
     required: true,
@@ -31,6 +35,11 @@ const customerSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+    required: true,
+  },
+  createdBy: {
+    type: String,
+    ref: "User",
     required: true,
   },
 });

@@ -41,6 +41,91 @@ export const handleLogin = async (email: string, password: string) => {
     }
 };
 
+export const handleGoogleLogin = async (googleToken: string) => {
+  try {
+    const url = import.meta.env.VITE_BACKEND_URL;
+    const response = await fetch(`${url}/user/google-login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: googleToken }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      toast.error(errorData.message || "Google login failed");
+      return { success: false, message: errorData.message || "Google login failed" };
+    }
+
+    const data = await response.json();
+    toast.success(data.message);
+    return { success: true, data };
+  } catch (error: any) {
+    console.error("Google login failed:", error.message);
+    toast.error("Google login failed");
+    return { success: false, message: error.message };
+  }
+};
+
+
+export const handleRegisterUser = async (user: {
+  email: string;
+  userName: string;
+  password?: string;
+  role: string;
+  phoneNumber?: string;
+  address?: string;
+}) => {
+  try {
+    console.log("making  register request");
+
+    const url = import.meta.env.VITE_BACKEND_URL;
+    const response = await fetch(`${url}/user/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      toast.error(errorData.message || "Failed to add user");
+      return { success: false, message: errorData.message || "Failed to add user" };
+    }
+
+    const data = await response.json();
+    toast.success(data.message);
+    return { success: true, data };
+  } catch (error: any) {
+    console.error("Failed to add user:", error.message);
+    toast.error("Failed to add user");
+    return { success: false, message: error.message };
+  }
+};
+
+export const fetchAuthenticatedUser = async (token: string) => {
+  try {
+    const url = import.meta.env.VITE_BACKEND_URL;
+    const response = await fetch(`${url}/user/authenticate-user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user");
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error: any) {
+    console.error("Failed to fetch user:", error.message);
+    return { success: false, message: error.message };
+  }
+};
+
 export const requestPasswordReset = async (email: string) => {
   try {
     const url = import.meta.env.VITE_BACKEND_URL;

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../services/userService"; // Assuming you have this function
 import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 
 const AddUser = () => {
   const [email, setEmail] = useState("");
@@ -53,7 +54,10 @@ const AddUser = () => {
       <div className="content-container">
         <div className="container">
           <div className="form-container">
-            <h1>Add User</h1>
+            <h2>
+              <i className="bi bi-person-fill-add"></i>
+              <span>Add User</span>
+            </h2>
             <hr />
             <div className="form-content">
               <form onSubmit={onSubmit}>
@@ -193,6 +197,7 @@ const AddUser = () => {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );

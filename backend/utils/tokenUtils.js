@@ -14,7 +14,9 @@ export const decodeToken = (token) => {
 };
 
 export const authenticateToken = (req, res, next) => {
-  const token = req.headers["authorization"];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
   if (!token) {
     return res
       .status(401)

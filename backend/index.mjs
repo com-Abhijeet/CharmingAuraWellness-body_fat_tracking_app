@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./controllers/userController.js";
 import reportRouter from "./controllers/reportController.js";
+import customerRouter from "./controllers/customerController.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ mongoose
 // Routes
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/reports", reportRouter);
+app.use("/api/v1/customers", customerRouter);
 
 // Start the server
 app.listen(port, () => {

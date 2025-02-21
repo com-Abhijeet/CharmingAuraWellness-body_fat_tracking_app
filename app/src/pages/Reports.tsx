@@ -11,14 +11,18 @@ import {
 import useMediaQuery from "../hooks/useMediaQuery";
 import { createReport } from "../services/reportService";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const Reports = () => {
   const user = useSelector((state: { user: { user: any } }) => state.user.user);
+  const navigate = useNavigate();
   const [customerDetails, setCustomerDetails] = useState<CustomerDetails>({
     name: "",
     email: "",
     contact: "",
     age: "",
+    gender: "",
     height: "",
     dob: "",
     weight: "",
@@ -86,8 +90,69 @@ const Reports = () => {
         ...bodyFatDetails,
         ...fatSideEffects,
       };
-      const response = await createReport(customerDetails, reportData);
-      console.log("Report created successfully:", response);
+      const response = await createReport(
+        customerDetails,
+        reportData,
+        user.email
+      );
+      if (response.status === 200) {
+        alert("Report submitted successfully");
+        console.log("Report created successfully:", response);
+
+        // Clear the form
+        setCustomerDetails({
+          name: "",
+          email: "",
+          contact: "",
+          age: "",
+          gender: "",
+          height: "",
+          dob: "",
+          weight: "",
+          address: "",
+        });
+        setBodyFatDetails({
+          reportId: "",
+          customer: "",
+          createdBy: user.email,
+          weight: "",
+          idealWeight: "",
+          extraWeight: "",
+          lessWeight: "",
+          bodyFat: "",
+          visceralFat: "",
+          restingMetabolism: "",
+          bmi: "",
+          bodyAge: "",
+          wholeBodySubcutaneous: "",
+          trunkFat: "",
+          armFat: "",
+          legFat: "",
+          skeletalMuscle: "",
+          trunkMuscles: "",
+          armMuscles: "",
+          legMuscles: "",
+        });
+        setFatSideEffects({
+          heartDisease: false,
+          highBloodPressure: false,
+          highBloodColestrol: false,
+          diabeties: false,
+          headAche: false,
+          cancer: false,
+          difficultyBreathinginSleep: false,
+          tierdEasily: false,
+          snoringInSleep: false,
+          stomachIssues: false,
+          menstrualCycleIssue: false,
+          paralysis: false,
+          bodyAche: false,
+          weakMemory: false,
+          darkeningOfFace: false,
+          hairfall: false,
+        });
+      }
+      navigate("/associate-dashboard");
     } catch (error) {
       console.error("Error creating report:", error);
     }
@@ -117,7 +182,7 @@ const Reports = () => {
                     setFormData={setFatSideEffects}
                   />
                 )}
-                <div className="form-navigation">
+                <div className="create-report form-navigation">
                   {currentForm > 1 && (
                     <button
                       type="button"
@@ -137,7 +202,7 @@ const Reports = () => {
                     </button>
                   )}
                   {currentForm === 2 && (
-                    <button type="submit" className="btn btn-success">
+                    <button type="submit" className="btn btn-primary">
                       Submit
                     </button>
                   )}
@@ -167,6 +232,7 @@ const Reports = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

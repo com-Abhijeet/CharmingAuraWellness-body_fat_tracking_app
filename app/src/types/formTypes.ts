@@ -1,8 +1,11 @@
+import { User } from "./userTypes";
+
 export interface CustomerDetails {
   name: string;
   email: string;
   contact: string;
   age: string;
+  gender : string;
   height: string;
   weight: string;
   dob: string;
@@ -10,6 +13,7 @@ export interface CustomerDetails {
 }
 
 export interface BodyFatDetails {
+  [key: string]: string;
   reportId: string;
   customer: string;
   createdBy: string;
@@ -49,4 +53,30 @@ export interface FatSideEffects {
   weakMemory: boolean;
   darkeningOfFace: boolean;
   hairfall: boolean;
+}
+
+export interface Report {
+  _id: string;
+  reportId : string;
+  customer: CustomerDetails;
+  createdBy : User; 
+  bodyFatDetails :BodyFatDetails
+  fatSideEffects: FatSideEffects;
+  createdAt? :  string;
+  updatedAt? : string;
+}
+
+export interface Stats {
+  totalReports: number;
+  reportsThisMonth: number;
+  reportsThisWeek: number;
+  reportsToday: number;
+  bodyFatStats: {
+    [key: string]: {
+      low: number;
+      avg: number;
+      high: number;
+    };
+  };
+  sideEffectsStats: [string, number][];
 }

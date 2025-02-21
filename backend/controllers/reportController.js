@@ -3,13 +3,20 @@ import Customer from "../models/customerSchema.js";
 import { generateReportId } from "../utils/uniqueIdUtils.js";
 import generatePDF from "../utils/pdfGenerator.js";
 import { sendPdfEmail } from "../communications/pdfEmailService.js";
+import {
+  calculateBodyFatStats,
+  calculateSideEffectsStats,
+} from "../utils/statsCalculation.js";
 import express from "express";
+import userModel from "../models/userSchema.js";
+import mongoose from "mongoose";
 
 const reportRouter = express.Router();
 
-reportRouter.post("/create-report", async (req, res) => {
+reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
   try {
     const { customerData, reportData } = req.body;
+    const createdByEmail = req.params.createdByEmail;
     console.log(reportData);
     const customerEmail = customerData.email;
 
@@ -23,10 +30,12 @@ reportRouter.post("/create-report", async (req, res) => {
         email: customerEmail,
         contact: customerData.contact,
         age: customerData.age,
+        gender: customerData.gender,
         height: customerData.height,
         weight: customerData.weight,
         dob: customerData.dob,
         address: customerData.address,
+        createdBy: createdByEmail,
       });
 
       customer = await newCustomer.save();
@@ -91,8 +100,118 @@ reportRouter.post("/create-report", async (req, res) => {
     );
 
     return res
-      .status(201)
+      .status(200)
       .json({ message: "Report created successfully", reportId });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+reportRouter.get("/get/:userEmail", async (req, res) => {
+  try {
+    console.log("Fetching reports");
+    const userEmail = req.params.userEmail;
+    const {
+      page = 1,
+      limit = 30,
+      sortBy = "createdAt",
+      sortOrder = "desc",
+    } = req.query;
+
+    const pageNumber = parseInt(page, 10);
+    const limitNumber = parseInt(limit, 10);
+
+    const reports = await Report.find({ createdBy: userEmail })
+      .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 })
+      .skip((pageNumber - 1) * limitNumber)
+      .limit(limitNumber)
+      .populate("customer")
+      .populate({
+        path: "createdBy",
+        model: userModel,
+        localField: "createdBy",
+        foreignField: "email",
+        justOne: true,
+      })
+      .exec();
+
+    const count = await Report.countDocuments({ createdBy: userEmail });
+
+    return res.status(200).json({
+      message: "Fetched successfully",
+      reports,
+      totalPages: Math.ceil(count / limitNumber),
+      currentPage: pageNumber,
+      totalReports: count, // Add totalReports to the response
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+reportRouter.get("/get-customer-reports/:customerId", async (req, res) => {
+  try {
+    console.log("Fetching reports for customer");
+
+    const customerId = req.params.customerId;
+    console.log("Customer ID:", customerId);
+
+    const objectId = new mongoose.Types.ObjectId(customerId); // Convert to ObjectId
+
+    const reports = await Report.find({ customer: objectId });
+
+    console.log("Reports found:", reports.length);
+    return res.status(200).json({ message: "Fetched successfully", reports });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+//export report stats for agent
+reportRouter.get("/get-stats/:createdByEmail", async (req, res) => {
+  try {
+    const createdByEmail = req.params.createdByEmail;
+
+    const reports = await Report.find({ createdBy: createdByEmail }).exec();
+
+    const totalReports = reports.length;
+
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfWeek = new Date();
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+    const startOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
+
+    const reportsThisMonth = reports.filter(
+      (report) => new Date(report.createdAt) >= startOfMonth
+    ).length;
+
+    const reportsThisWeek = reports.filter(
+      (report) => new Date(report.createdAt) >= startOfWeek
+    ).length;
+
+    const reportsToday = reports.filter(
+      (report) => new Date(report.createdAt) >= startOfDay
+    ).length;
+
+    const bodyFatStats = await calculateBodyFatStats(reports);
+    const sideEffectsStats = await calculateSideEffectsStats(reports);
+
+    return res.status(200).json({
+      totalReports,
+      reportsThisMonth,
+      reportsThisWeek,
+      reportsToday,
+      bodyFatStats,
+      sideEffectsStats,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

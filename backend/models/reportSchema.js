@@ -153,23 +153,26 @@ const fatSideEffectsSchema = new mongoose.Schema({
   },
 });
 
-const reportSchema = new mongoose.Schema({
-  reportId: {
-    type: String,
-    required: true,
+const reportSchema = new mongoose.Schema(
+  {
+    reportId: {
+      type: String,
+      required: true,
+    },
+    createdBy: {
+      type: String,
+      ref: "User",
+      required: true,
+    },
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+    },
+    bodyFatDetails: bodyFatDetailsSchema,
+    fatSideEffects: fatSideEffectsSchema,
   },
-  createdBy: {
-    type: String,
-    ref: "User",
-    required: true,
-  },
-  customer: {
-    type: String,
-    ref: "Customer",
-  },
-  bodyFatDetails: bodyFatDetailsSchema,
-  fatSideEffects: fatSideEffectsSchema,
-});
+  { timestamps: true }
+);
 
 const Report = mongoose.model("Report", reportSchema);
 

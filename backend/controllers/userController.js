@@ -3,7 +3,12 @@ import Session from "../models/sessionSchema.js";
 import express from "express";
 import { hashPassword, comparePassword } from "../utils/passwordUtils.js";
 import { sendAuthEmail } from "../communications/authEmail.js";
-import { createToken, decodeToken } from "../utils/tokenUtils.js";
+import {
+  createToken,
+  decodeToken,
+  authenticateToken,
+} from "../utils/tokenUtils.js";
+import { verifyGoogleToken } from "../services/googleAuthService.js";
 const userRouter = new express.Router();
 import dotenv from "dotenv";
 
@@ -15,21 +20,25 @@ userRouter.post("/register", async (req, res) => {
   try {
     const user = req.body;
 
-    //check for crucial fields to be existing if not return SC 400
-    if (!user.email || !user.userName || !user.password) {
+    // Check for crucial fields to be existing if not return SC 400
+    if (!user.email || !user.userName) {
+      console.log("missing fields", email, userName);
       return res.status(400).json({ message: "Please fill in all fields." });
     }
 
-    //check for existing user
+    // Check for existing user
     const existingUser = await userModel.findOne({ email: user.email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists." });
     }
 
-    //hash password using hashPassword function
-    const hashedPassword = await hashPassword(user.password);
+    // Hash password if provided
+    let hashedPassword = null;
+    if (user.password) {
+      hashedPassword = await hashPassword(user.password);
+    }
 
-    //create a newUser instance of userModel
+    // Create a newUser instance of userModel
     const newUser = new userModel({
       email: user.email,
       userName: user.userName,
@@ -39,8 +48,22 @@ userRouter.post("/register", async (req, res) => {
       role: user.role,
     });
 
-    //save the new user
+    // Save the new user
     await newUser.save();
+
+    // Send success email to registered user with email and password if provided
+    let emailContent = `You can now login to your account at ${process.env.FRONTEND_URL} and start using our services.`;
+    if (user.password) {
+      emailContent += `Thanks for joining with us!`;
+    }
+
+    await sendAuthEmail(
+      user.email,
+      "Welcome to Charming Aura Wellness",
+      emailContent
+    );
+
+    // Success response
     return res.status(200).json({ message: "User created successfully." });
   } catch (error) {
     console.log(error);
@@ -150,6 +173,51 @@ userRouter.post("/login", async (req, res) => {
     return res
       .status(200)
       .json({ message: " Login successful", user: user, token: token });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+userRouter.post("/google-login", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    // Verify the Google token
+    const payload = await verifyGoogleToken(token);
+    if (!payload) {
+      return res.status(400).json({ message: "Invalid Google token" });
+    }
+
+    const { email, name } = payload;
+
+    // Check if the user already exists
+    let user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate a JWT token
+    const jwtToken = createToken({ id: user._id.toString(), role: user.role });
+
+    // Create a new session
+    const newSession = new Session({
+      email: user.email,
+      authToken: jwtToken,
+      active: true,
+      ip: req.body.ip,
+      device: req.body.device,
+      browser: req.body.browser,
+      os: req.body.os,
+      location: req.body.location,
+    });
+
+    await newSession.save();
+
+    // Send token to client
+    return res
+      .status(200)
+      .json({ message: "Login successful", user, token: jwtToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -309,6 +377,21 @@ userRouter.put("/update-user", async (req, res) => {
       role: user.role,
       address: user.address,
     });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+userRouter.get("/authenticate-user", authenticateToken, async (req, res) => {
+  try {
+    console.log("authenticateToken");
+    const userId = req.user.id;
+    const user = await userModel.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    return res.status(200).json(user);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
