@@ -3,6 +3,7 @@ import { Report } from "../types/formTypes";
 import ReportDetailsOverlay from "./ReportsDetailsOverlay";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { toast } from "react-toastify";
+import { resendReportEmail } from "../services/reportService";
 
 interface ReportsTableProps {
   reports: Report[];
@@ -65,8 +66,9 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
   };
 
   const handleResendEmail = () => {
-    // Implement resend report email logic here
-    // console.log("Resend email for report ID:", contextMenu?.reportId);
+    const reportId = contextMenu?.reportId || "";
+    resendReportEmail(reportId);
+    console.log("Resend email for report ID:", contextMenu?.reportId);
     handleCloseContextMenu();
   };
 

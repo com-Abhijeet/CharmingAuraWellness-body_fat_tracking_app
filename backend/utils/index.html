@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wellness Report</title>
+  <style class="shared-css" type="text/css">
+    h2 {
+      width: 100%;
+      border-bottom: 2px dashed black;
+    }
+    p {
+      font-size: 1rem;
+      margin: 5px 0;
+    }
+    .s0 { font-size: 55px; font-family: HerticalSans_4e; color: #000; }
+    .s1 { font-size: 9px; font-family: Arimo-Regular_4f; color: #000; }
+    .s2 { font-size: 21px; font-family: CanvaSans-Bold_4g; color: #000; }
+    .s3 { font-size: 18px; font-family: CanvaSans-Regular_4h; color: #000; }
+    .s4 { font-size: 18px; font-family: CanvaSans-Bold_4g; color: #000; }
+    .s5 { font-size: 24px; font-family: CanvaSans-Bold_4g; color: #000; }
+    .s6 { font-size: 28px; font-family: CanvaSans-Bold_4g_1; color: #000; }
+    .s7 { font-size: 24px; font-family: CanvaSans-Regular_4h; color: #000; }
+    .s8 { font-size: 18px; font-family: CanvaSans-Bold_4g_1; color: #919191; }
+    .container {
+      width: 95%;
+      margin: 10px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 15px;
+    }
+    .header, .footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .details {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .left, .right {
+      width: 45%;
+    }
+    .left {
+      text-align: left;
+    }
+    .right {
+      text-align: right;
+    }
+    .table-container {
+      margin-top: 20px;
+      width: 45%;
+      float: left;
+    }
+    .diagnosis-container {
+      margin-top: 20px;
+      width: 45%;
+      float: right;
+    }
+    .diagnosis-list {
+      margin-top: 20px;
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    .diagnosis-list p {
+      margin: 5px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: left;
+    }
+    hr {
+      margin: 20px 0;
+      clear: both;
+    }
+    .footer{
+      clear: both;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Fitness and Wellness Report</h1>
+      <p>Report ID: {{reportId}}</p>
+      <p>Date: {{date}}</p>
+    </div>
+    <div class="details">
+      <div class="left">
+        <h2>Customer Details</h2>
+        <p>Name: {{customerName}}</p>
+        <p>Email: {{customerEmail}}</p>
+        <p>Contact: +91 {{customerContact}}</p>
+      </div>
+      <div class="right">
+        <h2>Associate Details</h2>
+        <p>Name: {{associateName}}</p>
+        <p>Email: {{associateEmail}}</p>
+        <p>Contact: +91 {{associateContact}}</p>
+      </div>
+    </div>
+    <div class="table-container">
+      <h2>Obesity Report</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Weight</td>
+            <td>{{weight}}</td>
+            <td>{{weightType}}</td>
+          </tr>
+          <tr>
+            <td>Ideal Weight</td>
+            <td>{{idealWeight}}</td>
+            <td>{{idealWeightType}}</td>
+          </tr>
+          <tr>
+            <td>Extra Weight</td>
+            <td>{{extraWeight}}</td>
+            <td>{{extraWeightType}}</td>
+          </tr>
+          <tr>
+            <td>Less Weight</td>
+            <td>{{lessWeight}}</td>
+            <td>{{lessWeightType}}</td>
+          </tr>
+          <tr>
+            <td>Body Fat</td>
+            <td>{{bodyFat}}</td>
+            <td>{{bodyFatType}}</td>
+          </tr>
+          <tr>
+            <td>Visceral Fat</td>
+            <td>{{visceralFat}}</td>
+            <td>{{visceralFatType}}</td>
+          </tr>
+          <tr>
+            <td>Resting Metabolism</td>
+            <td>{{restingMetabolism}}</td>
+            <td>{{restingMetabolismType}}</td>
+          </tr>
+          <tr>
+            <td>BMI</td>
+            <td>{{bmi}}</td>
+            <td>{{bmiType}}</td>
+          </tr>
+          <tr>
+            <td>Body Age</td>
+            <td>{{bodyAge}}</td>
+            <td>{{bodyAgeType}}</td>
+          </tr>
+          <tr>
+            <td>Whole Body Subcutaneous</td>
+            <td>{{wholeBodySubcutaneous}}</td>
+            <td>{{wholeBodySubcutaneousType}}</td>
+          </tr>
+          <tr>
+            <td>Trunk Fat</td>
+            <td>{{trunkFat}}</td>
+            <td>{{trunkFatType}}</td>
+          </tr>
+          <tr>
+            <td>Arm Fat</td>
+            <td>{{armFat}}</td>
+            <td>{{armFatType}}</td>
+          </tr>
+          <tr>
+            <td>Leg Fat</td>
+            <td>{{legFat}}</td>
+            <td>{{legFatType}}</td>
+          </tr>
+          <tr>
+            <td>Skeletal Muscle</td>
+            <td>{{skeletalMuscle}}</td>
+            <td>{{skeletalMuscleType}}</td>
+          </tr>
+          <tr>
+            <td>Trunk Muscles</td>
+            <td>{{trunkMuscles}}</td>
+            <td>{{trunkMusclesType}}</td>
+          </tr>
+          <tr>
+            <td>Arm Muscles</td>
+            <td>{{armMuscles}}</td>
+            <td>{{armMusclesType}}</td>
+          </tr>
+          <tr>
+            <td>Leg Muscles</td>
+            <td>{{legMuscles}}</td>
+            <td>{{legMusclesType}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr/>
+    </div>
+    {{#if hasSideEffects}}
+    <div class="diagnosis-container">
+      <h2>Body Diagnosis</h2>
+      <ul class="diagnosis-list">
+        {{#if heartDisease}}<li>Heart Disease</li>{{/if}}
+        {{#if highBloodPressure}}<li>High Blood Pressure</li>{{/if}}
+        {{#if highBloodColestrol}}<li>High Blood Cholesterol</li>{{/if}}
+        {{#if diabeties}}<li>Diabetes</li>{{/if}}
+        {{#if headAche}}<li>Headache</li>{{/if}}
+        {{#if cancer}}<li>Cancer</li>{{/if}}
+        {{#if difficultyBreathinginSleep}}<li>Difficulty Breathing in Sleep</li>{{/if}}
+        {{#if tierdEasily}}<li>Tired Easily</li>{{/if}}
+        {{#if snoringInSleep}}<li>Snoring in Sleep</li>{{/if}}
+        {{#if stomachIssues}}<li>Stomach Issues</li>{{/if}}
+        {{#if menstrualCycleIssue}}<li>Menstrual Cycle Issues</li>{{/if}}
+        {{#if paralysis}}<li>Paralysis</li>{{/if}}
+        {{#if bodyAche}}<li>Body Ache</li>{{/if}}
+        {{#if weakMemory}}<li>Weak Memory</li>{{/if}}
+        {{#if darkeningOfFace}}<li>Darkening of Face</li>{{/if}}
+        {{#if hairfall}}<li>Hairfall</li>{{/if}}
+      </ul>
+      <hr/>
+    </div>
+    {{/if}}
+    <div class="footer">
+      <p>Generated using Report Pro</p>
+      <p>All Rights Reserved @PSPM TECHNOLOGIES</p>
+    </div>
+  </div>
+</body>
+</html>

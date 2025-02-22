@@ -1,5 +1,6 @@
 import Report from "../models/reportSchema.js";
 import Customer from "../models/customerSchema.js";
+import userModel from "../models/userSchema.js";
 import { generateReportId } from "../utils/uniqueIdUtils.js";
 import generatePDF from "../utils/pdfGenerator.js";
 import { sendPdfEmail } from "../communications/pdfEmailService.js";
@@ -8,7 +9,6 @@ import {
   calculateSideEffectsStats,
 } from "../utils/statsCalculation.js";
 import express from "express";
-import userModel from "../models/userSchema.js";
 import mongoose from "mongoose";
 
 const reportRouter = express.Router();
@@ -87,8 +87,11 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
 
     await newReport.save();
 
+    // Fetch associate details
+    const associate = await userModel.findOne({ email: createdByEmail });
+
     // Generate PDF
-    const pdfPath = await generatePDF(newReport, customerData);
+    const pdfPath = await generatePDF(newReport, customerData, associate);
 
     // Send email with PDF attachment
     await sendPdfEmail(
@@ -212,6 +215,64 @@ reportRouter.get("/get-stats/:createdByEmail", async (req, res) => {
       bodyFatStats,
       sideEffectsStats,
     });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+reportRouter.post("/resend-report-email/:reportId", async (req, res) => {
+  try {
+    const reportId = req.params.reportId;
+    const isReport = await Report.findOne({ reportId: reportId });
+    if (!isReport) {
+      return res.status(404).json({ message: "Report not found" });
+    }
+    const report = await Report.findOne({ reportId: reportId })
+      .populate("customer")
+      .populate({
+        path: "createdBy",
+        model: userModel,
+        localField: "createdBy",
+        foreignField: "email",
+        justOne: true,
+      });
+
+    console.log(report);
+
+    const customerData = {
+      name: report.customer.name,
+      email: report.customer.email,
+      contact: report.customer.contact,
+      age: report.customer.age,
+      dob: report.customer.dob,
+      gender: report.customer.gender,
+      height: report.customer.height,
+      weight: report.customer.weight,
+      address: report.customer.address,
+    };
+
+    const associateData = {
+      name: report.createdBy.userName,
+      email: report.createdBy.email,
+      contact: report.createdBy.phoneNumber,
+      role: report.createdBy.role,
+      address: report.createdBy.address,
+    };
+
+    // Generate PDF
+    const pdfPath = await generatePDF(report, customerData, associateData);
+
+    // Send email with PDF attachment
+    await sendPdfEmail(
+      customerData.email,
+      "Your Report",
+      "Please find your report attached.",
+      pdfPath,
+      reportId
+    );
+
+    return res.status(200).json({ message: "Report resent successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

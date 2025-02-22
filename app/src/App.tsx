@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -21,6 +22,7 @@ import Customers from "./pages/Customers";
 import ViewCustomerDetails from "./pages/ViewCustomerDetails";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SecurityBoundary from "./components/SecurityBoundary";
+import Home from "./pages/Home";
 
 const clientId = import.meta.env.VITE_GOOGLE_OAUTH_CLIENTID;
 
@@ -34,7 +36,7 @@ function App() {
             <div>
               <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />

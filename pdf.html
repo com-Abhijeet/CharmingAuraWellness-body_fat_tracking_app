@@ -15,8 +15,8 @@
       width: 95%;
       margin: 10px auto;
       padding: 20px;
-      background-color: #242038;
-      color: wheat;
+      background-color: #f1f1f1;
+      color: rgb(42, 42, 42);
       border: 1px solid white;
       border-radius: 15px;
     }
@@ -34,13 +34,13 @@
       flex: 1;
     }
     .details {
-        width: 30%;
-        padding: 20px;
-        border: 1px solid  #242038;
+      width: 30%;
+      padding: 20px;
+      border: 1px solid #242038;
     }
-    .details2{
-        padding: 20px;
-        border: 1px solid   #242038;
+    .details2 {
+      padding: 20px;
+      border: 1px solid #242038;
     }
     .footer {
       text-align: center;
@@ -48,10 +48,10 @@
       font-size: 12px;
       color: wheat;
     }
-    .customer-details {
+    .customer-details, .associate-details {
       margin-bottom: 20px;
     }
-    .customer-details p {
+    .customer-details p, .associate-details p {
       margin: 5px 0;
     }
     .fat-side-effects p {
@@ -68,7 +68,23 @@
 </head>
 <body>
   <div class="container">
+    <div class="associate-details">
+    <h1>Associate Details</h1>
+    <p><strong>Name:</strong> Jane Smith</p>
+    <div class="row">
+      <div class="col">
+        <p><strong>Email:</strong> jane.smith@example.com</p>
+      </div>
+      <div class="col">
+        <p><strong>Contact:</strong> 987-654-3210</p>
+      </div>
+    </div>
+    <p><strong>Role:</strong> Associate</p>
+    <p><strong>Address:</strong> 456 Another St, Anytown, USA</p>
+  </div>
+  <hr />
     <div class="customer-details">
+      <h1>Customer Details</h1>
       <p><strong>Name:</strong> John Doe</p>
       <div class="row">
         <div class="col">
@@ -95,22 +111,22 @@
       <p><strong>Address:</strong> 123 Main St, Anytown, USA</p>
     </div>
     <hr />
-
+    
     <div class="row">
       <div class="details col">
         <h1>Body Fat Details</h1>
         <hr />
         <p><strong>Weight:</strong> <span style="color: green;">75 <i class="bi bi-check-circle"></i> Normal</span></p>
         <p><strong>Ideal Weight:</strong> <span style="color: green;">70 <i class="bi bi-check-circle"></i> Normal</span></p>
-        <p><strong>Extra Weight:</strong> <span style="color: yellow;">5 <i class="bi bi-exclamation-triangle"></i> High</span></p>
+        <p><strong>Extra Weight:</strong> <span style="color: #1118db;">5 <i class="bi bi-exclamation-triangle"></i> High</span></p>
         <p><strong>Less Weight:</strong> <span style="color: red;">10 <i class="bi bi-x-circle"></i> At Risk</span></p>
         <p><strong>Body Fat:</strong> <span style="color: green;">20 <i class="bi bi-check-circle"></i> Normal</span></p>
-        <p><strong>Visceral Fat:</strong> <span style="color: yellow;">15 <i class="bi bi-exclamation-triangle"></i> High</span></p>
+        <p><strong>Visceral Fat:</strong> <span style="color: #1118db;">15 <i class="bi bi-exclamation-triangle"></i> High</span></p>
         <p><strong>Resting Metabolism:</strong> <span style="color: green;">1800 <i class="bi bi-check-circle"></i> Normal</span></p>
         <p><strong>BMI:</strong> <span style="color: green;">22 <i class="bi bi-check-circle"></i> Normal</span></p>
         <p><strong>Body Age:</strong> <span style="color: green;">30 <i class="bi bi-check-circle"></i> Normal</span></p>
         <p><strong>Whole Body Subcutaneous:</strong> <span style="color: green;">20 <i class="bi bi-check-circle"></i> Normal</span></p>
-        <p><strong>Trunk Fat:</strong> <span style="color: yellow;">15 <i class="bi bi-exclamation-triangle"></i> High</span></p>
+        <p><strong>Trunk Fat:</strong> <span style="color: #1118db;">15 <i class="bi bi-exclamation-triangle"></i> High</span></p>
         <p><strong>Arm Fat:</strong> <span style="color: green;">10 <i class="bi bi-check-circle"></i> Normal</span></p>
         <p><strong>Leg Fat:</strong> <span style="color: green;">15 <i class="bi bi-check-circle"></i> Normal</span></p>
         <p><strong>Skeletal Muscle:</strong> <span style="color: green;">35 <i class="bi bi-check-circle"></i> Normal</span></p>
