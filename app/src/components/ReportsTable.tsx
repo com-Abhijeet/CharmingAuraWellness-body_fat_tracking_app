@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Report } from "../types/formTypes";
-import ReportDetailsOverlay from "./ReportsDetailsOverlay";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { toast } from "react-toastify";
 import { resendReportEmail } from "../services/reportService";
+import { useNavigate } from "react-router-dom";
 
 interface ReportsTableProps {
   reports: Report[];
@@ -34,6 +34,7 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
   } | null>(null);
   const [activeReportId, setActiveReportId] = useState("");
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const navigate = useNavigate();
 
   const handleRightClick = (event: React.MouseEvent, reportId: string) => {
     event.preventDefault();
@@ -53,9 +54,8 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
   const handleViewDetails = () => {
     const report = reports.find((r) => r.reportId === contextMenu?.reportId);
     if (report) {
-      setSelectedReport(report);
+      navigate(`/view-customer-report/${report.reportId}`);
     }
-    handleCloseContextMenu();
   };
 
   const handleDeleteReport = () => {
@@ -169,12 +169,6 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
           <button onClick={handleDeleteReport}>Delete Report</button>
           <button onClick={handleResendEmail}>Resend Report Email</button>
         </div>
-      )}
-      {selectedReport && (
-        <ReportDetailsOverlay
-          report={selectedReport}
-          onClose={handleCloseOverlay}
-        />
       )}
     </div>
   );

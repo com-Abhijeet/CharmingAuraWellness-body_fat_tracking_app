@@ -167,6 +167,7 @@ const Reports = () => {
             <CustomerDetailsForm
               formData={customerDetails}
               setFormData={setCustomerDetails}
+
             />
             {isMobile ? (
               <>

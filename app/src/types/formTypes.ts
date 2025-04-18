@@ -1,39 +1,41 @@
+import { Key } from "react";
 import { User } from "./userTypes";
 
 export interface CustomerDetails {
+  [x: string]: Key | null | undefined;
   name: string;
   email: string;
   contact: string;
   age: string;
   gender : string;
-  height: string;
-  weight: string;
+  height: number;
+  weight: number;
   dob: string;
   address: string;
 }
 
 export interface BodyFatDetails {
-  [key: string]: string;
+  [key: string]: string | number;
   reportId: string;
   customer: string;
   createdBy: string;
-  weight: string;
-  idealWeight: string;
-  extraWeight: string;
-  lessWeight: string;
-  bodyFat: string;
-  visceralFat: string;
-  restingMetabolism: string;
-  bmi: string;
-  bodyAge: string;
-  wholeBodySubcutaneous: string;
-  trunkFat: string;
-  armFat: string;
-  legFat: string;
-  skeletalMuscle: string;
-  trunkMuscles: string;
-  armMuscles: string;
-  legMuscles: string;
+  weight: number;
+  idealWeight: number;
+  extraWeight: number;
+  lessWeight: number;
+  bodyFat: number;
+  visceralFat: number;
+  restingMetabolism: number;
+  bmi: number;
+  bodyAge: number;
+  wholeBodySubcutaneous: number;
+  trunkFat: number;
+  armFat: number;
+  legFat: number;
+  skeletalMuscle: number;
+  trunkMuscles: number;
+  armMuscles: number;
+  legMuscles: number;
 }
 
 export interface FatSideEffects {

@@ -163,6 +163,33 @@ customerRouter.delete(
   }
 );
 
+// Fetch customers by name or phone number using regex
+customerRouter.get("/getCustomers", async (req, res) => {
+  try {
+    const { q } = req.query;
+    console.log("request recieved with query ", q);
+
+    if (!q || q.trim() === "") {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    // Use regex to search for customers by name or phone number
+    const regex = new RegExp(q, "i"); // Case-insensitive search
+    const customers = await Customer.find({
+      $or: [{ name: regex }, { contact: regex }],
+    }).limit(10); // Limit results for performance
+
+    if (!customers || customers.length === 0) {
+      return res.status(404).json({ message: "No customers found" });
+    }
+
+    return res.status(200).json({ customers });
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Get customer statistics
 customerRouter.get("/customer-stats/:createdByEmail", async (req, res) => {
   try {

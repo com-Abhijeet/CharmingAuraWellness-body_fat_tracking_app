@@ -23,6 +23,8 @@ import ViewCustomerDetails from "./pages/ViewCustomerDetails";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SecurityBoundary from "./components/SecurityBoundary";
 import Home from "./pages/Home";
+import CreateReport from "./pages/CreateReport";
+import ReportsDetailsOverlay from "./components/ReportsDetailsOverlay";
 
 const clientId = import.meta.env.VITE_GOOGLE_OAUTH_CLIENTID;
 
@@ -57,8 +59,15 @@ function App() {
                           element={<AssociateDashboard />}
                         />
                         <Route path="/add-user" element={<AddUser />} />
-                        <Route path="/create-report" element={<Reports />} />
+                        <Route
+                          path="/create-report"
+                          element={<CreateReport />}
+                        />
                         <Route path="/view-reports" element={<ViewReports />} />
+                        <Route
+                          path="/view-customer-report/:reportId"
+                          element={<ReportsDetailsOverlay />}
+                        />
                         <Route path="/customers" element={<Customers />} />
                         <Route
                           path="/view-customer-details/:email"

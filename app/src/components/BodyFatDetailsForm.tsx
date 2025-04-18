@@ -1,21 +1,68 @@
-import React from "react";
-import { BodyFatDetails } from "../types/formTypes";
+import React, { useEffect } from "react";
+import { BodyFatDetails, CustomerDetails } from "../types/formTypes";
+import { calculateIdealWeight } from "../utils/calculateWeights";
 
 interface Props {
   formData: BodyFatDetails;
   setFormData: React.Dispatch<React.SetStateAction<BodyFatDetails>>;
+  customerDetails: CustomerDetails;
 }
 
-const BodyFatDetailsForm: React.FC<Props> = ({ formData, setFormData }) => {
+const BodyFatDetailsForm: React.FC<Props> = ({
+  formData,
+  setFormData,
+  customerDetails,
+}) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  useEffect(() => {
+    if (formData.weight) {
+      // Check if weight is entered
+      const idealWeight = Number(
+        calculateIdealWeight(customerDetails.gender, customerDetails.height)
+      );
+
+      const weightDifference = Number(
+        (formData.weight - idealWeight).toPrecision(3)
+      );
+
+      setFormData((prevData) => ({
+        ...prevData,
+        idealWeight, // Update idealWeight in formData
+        extraWeight: weightDifference > 0 ? weightDifference : 0, // If weight is more than ideal
+        lessWeight: weightDifference < 0 ? Math.abs(weightDifference) : 0, // If weight is less than ideal
+      }));
+
+      console.log("Ideal Weight:", idealWeight);
+      console.log("Weight Difference:", weightDifference);
+    }
+  }, [
+    formData.weight,
+    customerDetails.gender,
+    customerDetails.height,
+    setFormData,
+  ]);
+
   return (
     <div className="body-fat-details form-container">
-      <h2>Body Fat Details</h2>
+      <h2>Body Fat Diagnostics Report Data</h2>
       <hr />
+      <div className="customer-overview mb-3">
+        <p>
+          <span>
+            <strong>Customer:</strong> {customerDetails.name}
+          </span>
+          <span>
+            <strong>Email:</strong> {customerDetails.email}
+          </span>
+          <span>
+            <strong>Contact:</strong> {customerDetails.contact}
+          </span>
+        </p>
+      </div>
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="weight" className="form-label">
@@ -31,7 +78,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({ formData, setFormData }) => {
               id="weight"
               name="weight"
               placeholder="eg : 75"
-              value={formData.weight}
+              // value={formData.weight}
               onChange={handleChange}
             />
           </div>

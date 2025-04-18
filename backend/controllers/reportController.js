@@ -2,7 +2,7 @@ import Report from "../models/reportSchema.js";
 import Customer from "../models/customerSchema.js";
 import userModel from "../models/userSchema.js";
 import { generateReportId } from "../utils/uniqueIdUtils.js";
-import generatePDF from "../utils/pdfGenerator.js";
+// import generatePDF from "../utils/pdfGenerator.js";
 import { sendPdfEmail } from "../communications/pdfEmailService.js";
 import {
   calculateBodyFatStats,
@@ -10,6 +10,7 @@ import {
 } from "../utils/statsCalculation.js";
 import express from "express";
 import mongoose from "mongoose";
+import generatePDF from "../utils/generatePdf.js";
 
 const reportRouter = express.Router();
 
@@ -85,13 +86,16 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
       },
     });
 
-    await newReport.save();
+    // await newReport.save();
 
     // Fetch associate details
     const associate = await userModel.findOne({ email: createdByEmail });
 
     // Generate PDF
+    // const pdfPath = await generatePDF(newReport, customerData, associate);
     const pdfPath = await generatePDF(newReport, customerData, associate);
+
+    console.log("pdfPath", pdfPath);
 
     // Send email with PDF attachment
     await sendPdfEmail(

@@ -144,3 +144,24 @@ export const fetchCustomerStats = async (createdByEmail: string) => {
     throw error;
   }
 };
+
+export const searchCustomers = async (query: string) => {
+  try {
+    const response = await fetch(`${API_URL}/customers/getCustomers?q=${query}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch customer");
+    }
+
+    const data = await response.json();
+    return data.customers;
+  } catch (error) {
+    console.error("Error fetching customer:", error);
+    throw error;
+  }
+};
