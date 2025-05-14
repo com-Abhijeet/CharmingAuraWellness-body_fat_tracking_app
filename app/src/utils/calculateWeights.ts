@@ -1,4 +1,4 @@
-import { centimeterToInches, kilogramsToLbs, lbsToKilograms} from "./conversions";
+import { centimeterToInches,} from "./conversions";
 
 
 // this function takes weight in KG as input , Gender : Male OR Female, height in cm 

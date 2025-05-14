@@ -120,8 +120,8 @@ const Login = () => {
                   </span>
                 </div>
               </div>
-              <div className="mb-3 d-flex justify-content-between">
-                <button type="submit" className="btn btn-primary">
+              <div className="mb-3 d-flex justify-content-center">
+                <button type="submit" className="login btn btn-primary">
                   Login
                 </button>
               </div>

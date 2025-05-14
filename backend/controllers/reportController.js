@@ -11,6 +11,8 @@ import {
 import express from "express";
 import mongoose from "mongoose";
 import generatePDF from "../utils/generatePdf.js";
+import { createPdfData } from "../utils/createPdfData.js";
+import { generatePdfReport } from "../utils/generatePDF2.js";
 
 const reportRouter = express.Router();
 
@@ -18,7 +20,7 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
   try {
     const { customerData, reportData } = req.body;
     const createdByEmail = req.params.createdByEmail;
-    console.log(reportData);
+    // console.log(reportData);
     const customerEmail = customerData.email;
 
     // Check if the customer already exists
@@ -86,14 +88,15 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
       },
     });
 
-    // await newReport.save();
+    await newReport.save();
+
+    /* Generating pdf 2 template*/
+    const data = createPdfData(customerData, { ...reportData, reportId }, "70");
+    const pdfPath = await generatePdfReport(data);
 
     // Fetch associate details
-    const associate = await userModel.findOne({ email: createdByEmail });
-
-    // Generate PDF
+    // const associate = await userModel.findOne({ email: createdByEmail });
     // const pdfPath = await generatePDF(newReport, customerData, associate);
-    const pdfPath = await generatePDF(newReport, customerData, associate);
 
     console.log("pdfPath", pdfPath);
 

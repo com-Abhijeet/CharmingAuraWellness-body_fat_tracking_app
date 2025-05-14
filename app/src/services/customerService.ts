@@ -145,9 +145,9 @@ export const fetchCustomerStats = async (createdByEmail: string) => {
   }
 };
 
-export const searchCustomers = async (query: string) => {
+export const searchCustomers = async (query: string, createdByEmail : string) => {
   try {
-    const response = await fetch(`${API_URL}/customers/getCustomers?q=${query}`, {
+    const response = await fetch(`${API_URL}/customers/getCustomers/${createdByEmail}?q=${query}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -599,6 +599,10 @@ html {
   background-color: var(--body-background-color);
 }
 
+.login-container .btn-primary{
+  padding: 5px 20%;
+}
+
 .login-container hr{
   width: 100%;
 }

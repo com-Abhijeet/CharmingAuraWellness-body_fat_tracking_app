@@ -183,7 +183,6 @@ const CreateReport = () => {
           </form>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

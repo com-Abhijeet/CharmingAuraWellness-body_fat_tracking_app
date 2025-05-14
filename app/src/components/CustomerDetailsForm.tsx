@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CustomerDetails } from "../types/formTypes";
 import { searchCustomers as searchCustomersByQuery } from "../services/customerService";
+import { useSelector } from "react-redux";
 
 interface Props {
   formData: CustomerDetails;
@@ -20,6 +21,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
+  const user = useSelector((state: { user: { user: any } }) => state.user.user);
 
   // Handle search input changes with debounce
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +47,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
   const searchCustomers = async (query: string) => {
     setIsLoading(true);
     try {
-      const results = await searchCustomersByQuery(query);
+      const results = await searchCustomersByQuery(query, user.email);
       setSearchResults(results);
     } catch (error) {
       console.error("Error fetching customers:", error);
@@ -77,7 +79,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
     setFormData(customer);
     setSearchResults([]);
     setSearchQuery("");
-    handleNext(); // Automatically move to the next step
+    handleNext();
   };
 
   // Handle creating a new customer

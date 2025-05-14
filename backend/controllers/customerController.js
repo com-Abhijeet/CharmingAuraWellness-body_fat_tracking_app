@@ -164,9 +164,10 @@ customerRouter.delete(
 );
 
 // Fetch customers by name or phone number using regex
-customerRouter.get("/getCustomers", async (req, res) => {
+customerRouter.get("/getCustomers/:createdByEmail", async (req, res) => {
   try {
     const { q } = req.query;
+    const { createdByEmail } = req.params;
     console.log("request recieved with query ", q);
 
     if (!q || q.trim() === "") {
@@ -176,7 +177,10 @@ customerRouter.get("/getCustomers", async (req, res) => {
     // Use regex to search for customers by name or phone number
     const regex = new RegExp(q, "i"); // Case-insensitive search
     const customers = await Customer.find({
-      $or: [{ name: regex }, { contact: regex }],
+      $and: [
+        { createdBy: createdByEmail },
+        { $or: [{ name: regex }, { contact: regex }] },
+      ],
     }).limit(10); // Limit results for performance
 
     if (!customers || customers.length === 0) {
