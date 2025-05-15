@@ -1,7 +1,10 @@
 import Report from "../models/reportSchema.js";
 import Customer from "../models/customerSchema.js";
 import userModel from "../models/userSchema.js";
-import { generateReportId } from "../utils/uniqueIdUtils.js";
+import {
+  generateCustomerId,
+  generateReportId,
+} from "../utils/uniqueIdUtils.js";
 // import generatePDF from "../utils/pdfGenerator.js";
 import { sendPdfEmail } from "../communications/pdfEmailService.js";
 import {
@@ -10,7 +13,6 @@ import {
 } from "../utils/statsCalculation.js";
 import express from "express";
 import mongoose from "mongoose";
-import generatePDF from "../utils/generatePdf.js";
 import { createPdfData } from "../utils/createPdfData.js";
 import { generatePdfReport } from "../utils/generatePDF2.js";
 
@@ -19,18 +21,24 @@ const reportRouter = express.Router();
 reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
   try {
     const { customerData, reportData } = req.body;
+    console.log("customerdata", customerData);
     const createdByEmail = req.params.createdByEmail;
-    // console.log(reportData);
+    let customerId = customerData.customerId;
     const customerEmail = customerData.email;
+    // console.log(reportData);
 
-    // Check if the customer already exists
-    let customer = await Customer.findOne({ email: customerEmail });
+    let customer;
+    if (customerId) {
+      customer = await Customer.findOne({ customerId: customerId });
+    }
 
+    customerId = await generateCustomerId(customerData.contact);
     if (!customer) {
       // Create a new customer if not exists
       const newCustomer = new Customer({
+        customerId: customerId,
         name: customerData.name,
-        email: customerEmail,
+        email: customerData.email,
         contact: customerData.contact,
         age: customerData.age,
         gender: customerData.gender,
@@ -272,7 +280,7 @@ reportRouter.post("/resend-report-email/:reportId", async (req, res) => {
 
     // Send email with PDF attachment
     await sendPdfEmail(
-      customerData.email,
+      customerEmail,
       "Your Report",
       "Please find your report attached.",
       pdfPath,

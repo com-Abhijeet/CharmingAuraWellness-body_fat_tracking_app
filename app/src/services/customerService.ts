@@ -53,9 +53,9 @@ export const fetchCustomers = async (userEmail: string, page: number, limit: num
   }
 };
 
-export const fetchCustomerDetails = async (customerEmail: string) => {
+export const fetchCustomerDetails = async (customerId: string) => {
   try {
-    const response = await fetch(`${API_URL}/customers/customerDetails/${customerEmail}`, {
+    const response = await fetch(`${API_URL}/customers/customerDetails/${customerId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

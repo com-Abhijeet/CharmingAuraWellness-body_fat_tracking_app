@@ -20,7 +20,7 @@ export const createReport = async (customerData : CustomerDetails, reportData : 
 
     const data = await response.json();
     toast.success(data.message);
-    return data;
+    return response;
   } catch (error) {
     console.error("Error creating report:", error);
     throw error;

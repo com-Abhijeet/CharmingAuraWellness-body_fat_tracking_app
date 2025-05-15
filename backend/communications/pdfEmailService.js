@@ -11,7 +11,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendPdfEmail = async (to, subject, text, attachmentPath, reportId) => {
+export const sendPdfEmail = async (
+  to,
+  subject,
+  text,
+  attachmentPath,
+  reportId
+) => {
+  console.log("email sending to ", to);
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to,

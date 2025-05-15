@@ -32,8 +32,8 @@ const Customers = () => {
     getCustomers();
   }, [dispatch, page]);
 
-  const handleViewDetails = (email: string) => {
-    navigate(`/view-customer-details/${email}`);
+  const handleViewDetails = (customerId: string) => {
+    navigate(`/view-customer-details/${customerId}`);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -72,7 +72,7 @@ const Customers = () => {
                       <td>
                         <button
                           className="btn btn-primary"
-                          onClick={() => handleViewDetails(customer.email)}
+                          onClick={() => handleViewDetails(customer.customerId)}
                         >
                           View Details
                         </button>

@@ -3,6 +3,7 @@ import { User } from "./userTypes";
 
 export interface CustomerDetails {
   [x: string]: Key | null | undefined;
+  customerId? : string;
   name: string;
   email: string;
   contact: string;

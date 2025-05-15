@@ -14,7 +14,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify/unstyled";
 import AddUser from "./pages/AddUser";
-import Reports from "./pages/Reports";
 import ViewReports from "./pages/ViewReports";
 import Register from "./pages/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -70,7 +69,7 @@ function App() {
                         />
                         <Route path="/customers" element={<Customers />} />
                         <Route
-                          path="/view-customer-details/:email"
+                          path="/view-customer-details/:customerId"
                           element={<ViewCustomerDetails />}
                         />
                       </Routes>

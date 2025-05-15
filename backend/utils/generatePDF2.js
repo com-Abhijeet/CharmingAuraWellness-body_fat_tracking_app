@@ -1,6 +1,10 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const flattenObject = (obj, prefix = "") =>
   Object.keys(obj).reduce((acc, key) => {
@@ -18,7 +22,7 @@ export const generatePdfReport = async (data) => {
     // console.log("Data passed to generatePdfReport:", data);
 
     // Define the output directory and ensure it exists
-    const outputDir = path.resolve("c:/Projects/CharmingAuraWellness/reports");
+    const outputDir = path.join(__dirname, "reports");
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
@@ -27,9 +31,9 @@ export const generatePdfReport = async (data) => {
     const outputFilePath = path.join(outputDir, `report-${data.reportId}.pdf`);
 
     // Read the HTML template
-    const templatePath = path.resolve(
-      "c:/Projects/CharmingAuraWellness/pdf.html"
-    );
+
+    const templatePath = path.join(__dirname, "templates", "pdf.html");
+
     let html = fs.readFileSync(templatePath, "utf-8");
 
     // Flatten the data object

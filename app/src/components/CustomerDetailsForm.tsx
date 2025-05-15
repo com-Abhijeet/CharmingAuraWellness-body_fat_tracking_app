@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CustomerDetails } from "../types/formTypes";
 import { searchCustomers as searchCustomersByQuery } from "../services/customerService";
 import { useSelector } from "react-redux";
@@ -74,18 +74,27 @@ const CustomerDetailsForm: React.FC<Props> = ({
     return age;
   };
 
-  // Handle selecting an existing customer
+  const [customerSelected, setCustomerSelected] = useState(false);
+
+  useEffect(() => {
+    if (customerSelected && formData.customerId) {
+      handleNext();
+      setCustomerSelected(false); // Reset for next time
+    }
+  }, [formData, customerSelected]);
+
   const handleSelectCustomer = (customer: CustomerDetails) => {
     setFormData(customer);
+    setCustomerSelected(true);
     setSearchResults([]);
     setSearchQuery("");
-    handleNext();
   };
 
   // Handle creating a new customer
   const handleCreateNewCustomer = () => {
     setIsCreatingNewCustomer(true);
     setFormData({
+      customerId: "",
       name: "",
       email: "",
       contact: "",
@@ -172,9 +181,19 @@ const CustomerDetailsForm: React.FC<Props> = ({
                   className="form-control"
                   id="name"
                   name="name"
+                  pattern="[A-Za-z\s]+"
+                  title="Only letters are allowed"
                   placeholder="Enter full name"
                   value={formData.name}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[A-Za-z\s]*$/.test(value)) {
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        name: value,
+                      }));
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -210,9 +229,15 @@ const CustomerDetailsForm: React.FC<Props> = ({
                   className="form-control"
                   id="contact"
                   name="contact"
-                  placeholder="Enter phone number"
+                  placeholder="Enter 10-digit contact number"
                   value={formData.contact}
-                  onChange={handleChange}
+                  maxLength={10}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d*$/.test(value) && value.length <= 10) {
+                      setFormData((prev) => ({ ...prev, contact: value }));
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -255,10 +280,19 @@ const CustomerDetailsForm: React.FC<Props> = ({
                   className="form-control"
                   id="dob"
                   name="dob"
+                  max="2999-12-31"
                   value={formData.dob}
                   onChange={(e) => {
+                    const enteredDate = e.target.value;
+                    const enteredYear = new Date(enteredDate).getFullYear();
+
+                    if (enteredYear > 2999) {
+                      alert("Please enter a year up to 2999 only.");
+                      return; // Prevent setting the date
+                    }
+
                     handleChange(e);
-                    const age = calculateAge(e.target.value);
+                    const age = calculateAge(enteredDate);
                     setFormData((prevData) => ({
                       ...prevData,
                       age: age.toString(),
@@ -300,7 +334,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
                   id="height"
                   name="height"
                   placeholder="Enter height"
-                  value={formData.height}
+                  value={formData.height === 0 ? "" : formData.height}
                   onChange={handleChange}
                 />
               </div>
@@ -323,7 +357,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
                   id="weight"
                   name="weight"
                   placeholder="Enter weight"
-                  value={formData.weight}
+                  value={formData.weight === 0 ? "" : formData.weight}
                   onChange={handleChange}
                 />
               </div>

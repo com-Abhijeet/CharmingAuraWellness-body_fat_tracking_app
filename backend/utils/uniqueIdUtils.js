@@ -1,3 +1,5 @@
+import Customer from "../models/customerSchema.js";
+
 export const generateReportId = () => {
   const now = new Date();
   const year = String(now.getFullYear()).slice(-2); // Last 2 digits of the year
@@ -16,4 +18,22 @@ export const generateReportId = () => {
   const dayLetter = randomLetter();
 
   return `${year}${yearLetter}${month}${monthLetter}${day}${dayLetter}${hour}${minute}${second}`;
+};
+
+export const generateCustomerId = async (contact) => {
+  let prefixNum = 0;
+
+  while (prefixNum < 100) {
+    const prefix = prefixNum.toString().padStart(2, "0");
+    const customerId = `C${prefix}${contact}`;
+
+    const existing = await Customer.findOne({ customerId }).lean();
+    if (!existing) {
+      return customerId;
+    }
+
+    prefixNum++;
+  }
+
+  throw new Error("Unable to generate unique customer ID");
 };

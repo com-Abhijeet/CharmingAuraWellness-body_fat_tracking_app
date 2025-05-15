@@ -78,7 +78,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="weight"
               name="weight"
               placeholder="eg : 75"
-              // value={formData.weight}
+              value={formData.weight === 0 ? "" : formData.weight}
               onChange={handleChange}
             />
           </div>
@@ -97,7 +97,8 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="idealWeight"
               name="idealWeight"
               placeholder="eg : 65"
-              value={formData.idealWeight}
+              readOnly
+              value={formData.idealWeight === 0 ? "" : formData.idealWeight}
               onChange={handleChange}
             />
           </div>
@@ -115,8 +116,9 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               className="form-control"
               id="extraWeight"
               name="extraWeight"
+              readOnly
               placeholder="eg : 10"
-              value={formData.extraWeight}
+              value={formData.extraWeight === 0 ? "" : formData.extraWeight}
               onChange={handleChange}
             />
           </div>
@@ -134,8 +136,9 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               className="form-control"
               id="lessWeight"
               name="lessWeight"
+              readOnly
               placeholder="eg : 0"
-              value={formData.lessWeight}
+              value={formData.lessWeight === 0 ? "" : formData.lessWeight}
               onChange={handleChange}
             />
           </div>
@@ -156,7 +159,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="bodyFat"
               name="bodyFat"
               placeholder="eg : 17"
-              value={formData.bodyFat}
+              value={formData.bodyFat === 0 ? "" : formData.bodyFat}
               onChange={handleChange}
             />
           </div>
@@ -175,7 +178,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="visceralFat"
               name="visceralFat"
               placeholder="eg : 5"
-              value={formData.visceralFat}
+              value={formData.visceralFat === 0 ? "" : formData.visceralFat}
               onChange={handleChange}
             />
           </div>
@@ -196,7 +199,11 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="restingMetabolism"
               name="restingMetabolism"
               placeholder="eg : 1800"
-              value={formData.restingMetabolism}
+              value={
+                formData.restingMetabolism === 0
+                  ? ""
+                  : formData.restingMetabolism
+              }
               onChange={handleChange}
             />
           </div>
@@ -215,7 +222,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="bmi"
               name="bmi"
               placeholder="eg : 25"
-              value={formData.bmi}
+              value={formData.bmi === 0 ? "" : formData.bmi}
               onChange={handleChange}
             />
           </div>
@@ -234,7 +241,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="bodyAge"
               name="bodyAge"
               placeholder="eg : 25"
-              value={formData.bodyAge}
+              value={formData.bodyAge === 0 ? "" : formData.bodyAge}
               onChange={handleChange}
             />
           </div>
@@ -254,7 +261,11 @@ const BodyFatDetailsForm: React.FC<Props> = ({
             id="wholeBodySubcutaneous"
             name="wholeBodySubcutaneous"
             placeholder="eg : 25"
-            value={formData.wholeBodySubcutaneous}
+            value={
+              formData.wholeBodySubcutaneous === 0
+                ? ""
+                : formData.wholeBodySubcutaneous
+            }
             onChange={handleChange}
           />
         </div>
@@ -274,7 +285,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="trunkFat"
               name="trunkFat"
               placeholder="eg : 5"
-              value={formData.trunkFat}
+              value={formData.trunkFat === 0 ? "" : formData.trunkFat}
               onChange={handleChange}
             />
           </div>
@@ -293,7 +304,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="armFat"
               name="armFat"
               placeholder="eg : 5"
-              value={formData.armFat}
+              value={formData.armFat === 0 ? "" : formData.armFat}
               onChange={handleChange}
             />
           </div>
@@ -312,7 +323,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="legFat"
               name="legFat"
               placeholder="eg : 5"
-              value={formData.legFat}
+              value={formData.legFat === 0 ? "" : formData.legFat}
               onChange={handleChange}
             />
           </div>
@@ -333,7 +344,9 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="skeletalMuscle"
               name="skeletalMuscle"
               placeholder="eg : 5"
-              value={formData.skeletalMuscle}
+              value={
+                formData.skeletalMuscle === 0 ? "" : formData.skeletalMuscle
+              }
               onChange={handleChange}
             />
           </div>
@@ -352,7 +365,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="trunkMuscles"
               name="trunkMuscles"
               placeholder="eg : 5"
-              value={formData.trunkMuscles}
+              value={formData.trunkMuscles === 0 ? "" : formData.trunkMuscles}
               onChange={handleChange}
             />
           </div>
@@ -371,7 +384,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="armMuscles"
               name="armMuscles"
               placeholder="eg : 5"
-              value={formData.armMuscles}
+              value={formData.armMuscles === 0 ? "" : formData.armMuscles}
               onChange={handleChange}
             />
           </div>
@@ -390,7 +403,7 @@ const BodyFatDetailsForm: React.FC<Props> = ({
               id="legMuscles"
               name="legMuscles"
               placeholder="eg : 5"
-              value={formData.legMuscles}
+              value={formData.legMuscles === 0 ? "" : formData.legMuscles}
               onChange={handleChange}
             />
           </div>

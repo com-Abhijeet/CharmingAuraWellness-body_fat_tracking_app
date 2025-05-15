@@ -69,6 +69,8 @@ customerRouter.get("/get/:userEmail", async (req, res) => {
       return res.status(404).json({ message: "Customers not found" });
     }
 
+    console.log("customers", customers);
+
     return res.status(200).json({
       message: "Fetched successfully",
       customers,
@@ -81,13 +83,13 @@ customerRouter.get("/get/:userEmail", async (req, res) => {
 });
 
 //get customer details with email
-customerRouter.get("/customerDetails/:customerEmail", async (req, res) => {
+customerRouter.get("/customerDetails/:customerId", async (req, res) => {
   try {
-    const customerEmail = req.params.customerEmail;
-    if (!customerEmail) {
+    const customerId = req.params.customerId;
+    if (!customerId) {
       return res.status(400).json({ message: "Customer Email is required" });
     }
-    const customer = await Customer.findOne({ email: customerEmail });
+    const customer = await Customer.findOne({ customerId: customerId });
     if (!customer) {
       return res.status(404).json({ message: "Customer not found" });
     }
@@ -99,59 +101,55 @@ customerRouter.get("/customerDetails/:customerEmail", async (req, res) => {
 });
 
 //update customer details
-customerRouter.put(
-  "/update/:customerEmail",
-
-  async (req, res) => {
-    try {
-      const customerEmail = req.params.customerEmail;
-      const customer = await Customer.findOne({ email: customerEmail });
-      if (!customer) {
-        return res.status(404).json({ message: "Customer not found" });
-      }
-      // update the customer  details
-      const updatedCustomer = await Customer.updateOne(
-        { email: customerEmail },
-        {
-          $set: {
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            age: req.body.age,
-            height: req.body.height,
-            weight: req.body.weight,
-            dob: req.body.dob,
-            address: req.body.address,
-          },
-        }
-      );
-
-      return res
-        .status(200)
-        .json({ message: "Details updated successfully", updatedCustomer });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Internal server error" });
+customerRouter.put("/update/:customerId", async (req, res) => {
+  try {
+    const customerId = req.params.customerId;
+    const customer = await Customer.findOne({ customerId: customerId });
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
     }
+    // update the customer  details
+    const updatedCustomer = await Customer.updateOne(
+      { email: customerId },
+      {
+        $set: {
+          name: req.body.name,
+          email: req.body.email,
+          phone: req.body.phone,
+          age: req.body.age,
+          height: req.body.height,
+          weight: req.body.weight,
+          dob: req.body.dob,
+          address: req.body.address,
+        },
+      }
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Details updated successfully", updatedCustomer });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
-);
+});
 
 // delete a customer
 customerRouter.delete(
-  "/delete/:customerEmail",
+  "/delete/:customerId",
 
   async (req, res) => {
     try {
-      const customerEmail = req.params.customerEmail;
-      if (!customerEmail) {
+      const customerId = req.params.customerId;
+      if (!customerId) {
         return res.status(400).json({ message: "Customer email is required" });
       }
-      const customer = await Customer.findOne({ email: customerEmail });
+      const customer = await Customer.findOne({ customerId: customerId });
       if (!customer) {
         return res.status(404).json({ message: "Customer not found" });
       }
       // delete the customer
-      await Customer.deleteOne({ email: customerEmail });
+      await Customer.deleteOne({ email: customerId });
 
       return res
         .status(200)

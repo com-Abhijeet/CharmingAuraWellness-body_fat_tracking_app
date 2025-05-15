@@ -13,7 +13,8 @@ import CustomerReportComparison from "../components/CustomerReportComparison";
 import { setReports, clearReports } from "../redux/reportsSlice";
 
 const ViewCustomerDetails = () => {
-  const { email } = useParams<{ email: string }>();
+  const { customerId } = useParams<{ customerId: string }>();
+  console.log(customerId);
   const dispatch = useDispatch();
   const reports = useSelector(
     (state: { reports: { reports: Report[] } }) => state.reports.reports
@@ -25,7 +26,7 @@ const ViewCustomerDetails = () => {
   useEffect(() => {
     const getCustomerDetails = async () => {
       try {
-        const data = await fetchCustomerDetails(email!);
+        const data = await fetchCustomerDetails(customerId!);
         setCustomer(data);
         const reportsData = await fetchCustomerReports(data._id);
         dispatch(clearReports());
@@ -36,7 +37,7 @@ const ViewCustomerDetails = () => {
     };
 
     getCustomerDetails();
-  }, [email, dispatch]);
+  }, [customerId, dispatch]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -49,7 +50,7 @@ const ViewCustomerDetails = () => {
   const handleSave = async () => {
     try {
       if (customer) {
-        await updateCustomer(email!, customer);
+        await updateCustomer(customerId!, customer);
         setIsEditing(false);
       }
     } catch (error) {
