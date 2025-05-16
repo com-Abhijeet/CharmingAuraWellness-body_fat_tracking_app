@@ -26,6 +26,7 @@ export const generateCustomerId = async (contact) => {
   while (prefixNum < 100) {
     const prefix = prefixNum.toString().padStart(2, "0");
     const customerId = `C${prefix}${contact}`;
+    // 9876543210  c 05 contactno
 
     const existing = await Customer.findOne({ customerId }).lean();
     if (!existing) {
