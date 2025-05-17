@@ -2,27 +2,37 @@ import React, { useEffect, useState } from "react";
 import { CustomerDetails } from "../types/formTypes";
 import { searchCustomers as searchCustomersByQuery } from "../services/customerService";
 import { useSelector } from "react-redux";
+import validateCustomerDetails from "../utils/validateCustomerDetails";
 
 interface Props {
   formData: CustomerDetails;
   setFormData: React.Dispatch<React.SetStateAction<CustomerDetails>>;
   handleNext: () => void;
+  errors: Record<string, string>;
+  setErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  isCreatingNewCustomer: boolean;
+  setIsCreatingNewCustomer: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CustomerDetailsForm: React.FC<Props> = ({
   formData,
   setFormData,
   handleNext,
+  errors,
+  setErrors,
+  isCreatingNewCustomer,
+  setIsCreatingNewCustomer,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<CustomerDetails[]>([]);
-  const [isCreatingNewCustomer, setIsCreatingNewCustomer] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
   const user = useSelector((state: { user: { user: any } }) => state.user.user);
+  const [customerSelected, setCustomerSelected] = useState(false);
 
+  console.log("errors in customer form", errors);
   // Handle search input changes with debounce
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -74,8 +84,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
     return age;
   };
 
-  const [customerSelected, setCustomerSelected] = useState(false);
-
+  //select customer
   useEffect(() => {
     if (customerSelected && formData.customerId) {
       handleNext();
@@ -115,6 +124,8 @@ const CustomerDetailsForm: React.FC<Props> = ({
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const validation = validateCustomerDetails(formData);
+    setErrors(validation);
   };
 
   return (
@@ -132,16 +143,21 @@ const CustomerDetailsForm: React.FC<Props> = ({
               </span>
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
                 id="search"
                 placeholder="Search by name or phone number"
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
+              {!customerSelected && (
+                <div className="invalid-feedback">
+                  {"Customer Not Selected"}
+                </div>
+              )}
             </div>
           </div>
           {isLoading && <p>Loading...</p>}
-          {searchResults.length > 0 && (
+          {searchResults.length > 0 ? (
             <ul className="list-group">
               {searchResults.map((customer) => (
                 <li
@@ -153,6 +169,10 @@ const CustomerDetailsForm: React.FC<Props> = ({
                   {customer.name} - {customer.contact} - {customer.email}
                 </li>
               ))}
+            </ul>
+          ) : (
+            <ul className="list-group">
+              <li className="list-group-item">No Customers Found</li>
             </ul>
           )}
           <button
@@ -179,11 +199,11 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
                   id="name"
                   name="name"
-                  pattern="[A-Za-z\s]+"
-                  title="Only letters are allowed"
+                  // pattern="[A-Za-z\s]+"
+                  // title="Only letters are allowed"
                   placeholder="Enter full name"
                   value={formData.name}
                   onChange={(e) => {
@@ -196,6 +216,9 @@ const CustomerDetailsForm: React.FC<Props> = ({
                     }
                   }}
                 />
+                {errors.name && (
+                  <div className="invalid-feedback">{errors.name}</div>
+                )}
               </div>
             </div>
             <div className="col">
@@ -208,15 +231,18 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="email"
-                  className="form-control"
+                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
                   id="email"
                   name="email"
                   placeholder="Enter email address"
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                  title="Please enter a valid email address"
+                  // pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  // title="Please enter a valid email address"
                   value={formData.email}
                   onChange={handleChange}
                 />
+                {errors.email && (
+                  <div className="invalid-feedback">{errors.email}</div>
+                )}
               </div>
             </div>
             <div className="col">
@@ -229,12 +255,15 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${
+                    errors.contact ? "is-invalid" : ""
+                  }`}
                   id="contact"
                   name="contact"
                   placeholder="Enter 10-digit contact number"
                   value={formData.contact}
                   maxLength={10}
+                  minLength={10}
                   onChange={(e) => {
                     const value = e.target.value;
                     if (/^\d*$/.test(value) && value.length <= 10) {
@@ -242,6 +271,9 @@ const CustomerDetailsForm: React.FC<Props> = ({
                     }
                   }}
                 />
+                {errors.contact && (
+                  <div className="invalid-feedback">{errors.contact}</div>
+                )}
               </div>
             </div>
           </div>
@@ -257,7 +289,9 @@ const CustomerDetailsForm: React.FC<Props> = ({
                   <i className="bi bi-gender-ambiguous"></i>
                 </span>
                 <select
-                  className="form-control"
+                  className={`form-control ${
+                    errors.gender ? "is-invalid" : ""
+                  }`}
                   id="gender"
                   name="gender"
                   value={formData.gender}
@@ -280,7 +314,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="date"
-                  className="form-control"
+                  className={`form-control ${errors.dob ? "is-invalid" : ""}`}
                   id="dob"
                   name="dob"
                   max="2999-12-31"
@@ -314,7 +348,7 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="number"
-                  className="form-control"
+                  className={`form-control ${errors.age ? "is-invalid" : ""}`}
                   id="age"
                   name="age"
                   placeholder="Age"
@@ -333,13 +367,20 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="number"
-                  className="form-control"
+                  className={`form-control ${
+                    errors.height ? "is-invalid" : ""
+                  }`}
                   id="height"
                   name="height"
+                  // min={0}
+                  // maxLength={3}
                   placeholder="Enter height"
                   value={formData.height === 0 ? "" : formData.height}
                   onChange={handleChange}
                 />
+                {errors.height && (
+                  <div className="invalid-feedback">{errors.height}</div>
+                )}
               </div>
             </div>
           </div>
@@ -356,13 +397,18 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="number"
-                  className="form-control"
+                  className={`form-control ${
+                    errors.weight ? "is-invalid" : ""
+                  }`}
                   id="weight"
                   name="weight"
                   placeholder="Enter weight"
                   value={formData.weight === 0 ? "" : formData.weight}
                   onChange={handleChange}
                 />
+                {errors.weight && (
+                  <div className="invalid-feedback">{errors.weight}</div>
+                )}
               </div>
             </div>
             <div className="col">
@@ -375,13 +421,19 @@ const CustomerDetailsForm: React.FC<Props> = ({
                 </span>
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${
+                    errors.address ? "is-invalid" : ""
+                  }`}
                   id="address"
                   name="address"
+                  maxLength={250}
                   placeholder="Enter address"
                   value={formData.address}
                   onChange={handleChange}
-                ></input>
+                />
+                {errors.address && (
+                  <div className="invalid-feedback">{errors.address}</div>
+                )}
               </div>
             </div>
           </div>

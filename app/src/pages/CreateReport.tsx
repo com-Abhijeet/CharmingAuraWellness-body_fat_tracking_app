@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import CustomerDetailsForm from "../components/CustomerDetailsForm";
 import BodyFatDetailsForm from "../components/BodyFatDetailsForm";
@@ -13,14 +13,18 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CreateReportLoadingOverlay from "../components/animations/createReportLoadingOverlay";
+import validateCustomerDetails from "../utils/validateCustomerDetails";
+import validateBodyFatDetails from "../utils/validateBodyFatDetails";
 
 const CreateReport = () => {
   const user = useSelector((state: { user: { user: any } }) => state.user.user);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [isCreatingNewCustomer, setIsCreatingNewCustomer] = useState(false);
 
   const [customerDetails, setCustomerDetails] = useState<CustomerDetails>({
     name: "",
@@ -76,29 +80,33 @@ const CreateReport = () => {
     hairfall: false,
   });
 
-  const isCustomerDetailsValid = () => {
-    const { name, email, contact, age, gender, height, dob, weight, address } =
-      customerDetails;
-    return (
-      name.trim() &&
-      email.trim() &&
-      contact.trim() &&
-      age.trim() &&
-      gender.trim() &&
-      height > 0 &&
-      dob.trim() &&
-      weight > 0 &&
-      address.trim()
-    );
-  };
-
+  //handleNext
   const handleNext = () => {
-    if (currentStep === 1 && !isCustomerDetailsValid()) {
-      toast.error(
-        "Please fill in all required customer details before proceeding."
-      );
-      return;
+    if (currentStep === 1) {
+      const validationErrors = validateCustomerDetails(customerDetails);
+      setErrors(validationErrors);
+      console.log("validation errors", errors);
+      const isValid = Object.keys(validationErrors).length === 0;
+
+      if (!isValid) {
+        toast.error(
+          "Please fill in all required customer details before proceeding."
+        );
+        return;
+      }
+    } else if (currentStep === 2) {
+      const validationErrors = validateBodyFatDetails(bodyFatDetails);
+      setErrors(validationErrors);
+      console.log("validation errors", errors);
+      const isValid = Object.keys(validationErrors).length === 0;
+
+      if (!isValid) {
+        toast.error("Please fill in valid details before proceeding ");
+        return;
+      }
     }
+
+    setErrors({}); // Clear previous errors
     setCurrentStep((prevStep) => prevStep + 1);
   };
 
@@ -147,6 +155,10 @@ const CreateReport = () => {
                       formData={customerDetails}
                       setFormData={setCustomerDetails}
                       handleNext={handleNext}
+                      errors={errors}
+                      setErrors={setErrors}
+                      isCreatingNewCustomer={isCreatingNewCustomer}
+                      setIsCreatingNewCustomer={setIsCreatingNewCustomer}
                     />
                     <div className="form-navigation">
                       <button
@@ -167,6 +179,8 @@ const CreateReport = () => {
                       formData={bodyFatDetails}
                       setFormData={setBodyFatDetails}
                       customerDetails={customerDetails}
+                      errors={errors}
+                      setErrors={setErrors}
                     />
                     <div className="form-navigation">
                       <button

@@ -33,7 +33,7 @@ export const calculateWeightChange = (currentWeight, previousWeight) => {
     });
   } else {
     return (weightChange = {
-      value: weightDiff,
+      value: weightDiff.toFixed(2),
       text: "Your weight is consistent",
       direction: "",
     });
@@ -66,7 +66,7 @@ export const calculateFatMass = (weight, bodyFatPercent) => {
     status = "High";
   }
   return (fatMass = {
-    value: value,
+    value: value.toFixed(2),
     status: status,
   });
 };
@@ -100,7 +100,7 @@ export const calculateSubcutaneous = (subcutaneous, gender) => {
   }
 
   return (subcutaneous = {
-    value: subcutaneous,
+    value: subcutaneous.toFixed(2),
     status: status,
   });
 };
@@ -133,7 +133,7 @@ export const muscleMass = (skeletalMuscle, weight, gender) => {
   }
 
   return (muscleMass = {
-    value: value,
+    value: value.toFixed(2),
     status: status,
   });
 };
@@ -170,7 +170,7 @@ export const restingMetabolismRange = (restingMetabolism, gender) => {
   }
 
   return (restingMetabolism = {
-    value: restingMetabolism,
+    value: restingMetabolism.toFixed(4),
     range: range,
   });
 };

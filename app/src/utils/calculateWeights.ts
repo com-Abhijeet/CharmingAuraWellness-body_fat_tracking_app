@@ -10,7 +10,7 @@ export const calculateIdealWeight = (gender : string , heightInCm : number) =>{
     // Male:	52 kg + 1.9 kg per inch over 5 feet
     // Female:	49 kg + 1.7 kg per inch over 5 feet
     const heightInInches = centimeterToInches(heightInCm);
-    console.log("height in iinches,  ", heightInInches, gender);
+    // console.log("height in inches,  ", heightInInches, gender);
 
 
     if(gender === 'male'){
@@ -19,8 +19,8 @@ export const calculateIdealWeight = (gender : string , heightInCm : number) =>{
     else if(gender === 'female'){
         idealWeight = 49 + (1.7 * (heightInInches - 60));
     }
-    console.log("Ideal Weight",idealWeight);
-    return idealWeight.toPrecision(4);
+    // console.log("Ideal Weight",idealWeight);
+    return idealWeight.toPrecision(2);
 }
 
 export const calculateWeightDifference = (weight  : number, idealWeight : number) => {

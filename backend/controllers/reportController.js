@@ -20,8 +20,9 @@ const reportRouter = express.Router();
 
 reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
   try {
+    console.time("request recieved");
     const { customerData, reportData } = req.body;
-    console.log("customerdata", customerData);
+    // console.log("customerdata", customerData);
     const createdByEmail = req.params.createdByEmail;
     let customerId = customerData.customerId;
     const customerEmail = customerData.email;
@@ -95,40 +96,31 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
         hairfall: reportData.hairfall,
       },
     });
-
     await newReport.save();
 
-    /* Generating pdf 2 template*/
+    res.status(200).json({ message: "Report created successfully", reportId });
+    console.timeEnd("request recieved");
+
     const data = createPdfData(customerData, { ...reportData, reportId }, "70");
+    console.time("pdf and email");
     const pdfPath = await generatePdfReport(data);
-
-    // Fetch associate details
-    // const associate = await userModel.findOne({ email: createdByEmail });
-    // const pdfPath = await generatePDF(newReport, customerData, associate);
-
-    console.log("pdfPath", pdfPath);
-
-    // Send email with PDF attachment
-    await sendPdfEmail(
+    sendPdfEmail(
       customerEmail,
       "Your Report",
       "Please find your report attached.",
       pdfPath,
       reportId
     );
-
-    return res
-      .status(200)
-      .json({ message: "Report created successfully", reportId });
+    console.timeEnd("pdf and email");
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
 
 reportRouter.get("/get/:userEmail", async (req, res) => {
   try {
-    console.log("Fetching reports");
+    // console.log("Fetching reports");
     const userEmail = req.params.userEmail;
     const {
       page = 1,
@@ -164,23 +156,23 @@ reportRouter.get("/get/:userEmail", async (req, res) => {
       totalReports: count, // Add totalReports to the response
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
 
 reportRouter.get("/get-customer-reports/:customerId", async (req, res) => {
   try {
-    console.log("Fetching reports for customer");
+    // console.log("Fetching reports for customer");
 
     const customerId = req.params.customerId;
-    console.log("Customer ID:", customerId);
+    // console.log("Customer ID:", customerId);
 
     const objectId = new mongoose.Types.ObjectId(customerId); // Convert to ObjectId
 
     const reports = await Report.find({ customer: objectId });
 
-    console.log("Reports found:", reports.length);
+    // console.log("Reports found:", reports.length);
     return res.status(200).json({ message: "Fetched successfully", reports });
   } catch (error) {
     console.error(error);
@@ -231,7 +223,7 @@ reportRouter.get("/get-stats/:createdByEmail", async (req, res) => {
       sideEffectsStats,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -253,7 +245,7 @@ reportRouter.post("/resend-report-email/:reportId", async (req, res) => {
         justOne: true,
       });
 
-    console.log(report);
+    // console.log(report);
 
     const customerData = {
       name: report.customer.name,
@@ -289,7 +281,7 @@ reportRouter.post("/resend-report-email/:reportId", async (req, res) => {
 
     return res.status(200).json({ message: "Report resent successfully" });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
