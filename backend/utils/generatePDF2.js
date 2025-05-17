@@ -48,7 +48,7 @@ export const generatePdfReport = async (data) => {
       html = html.replace(regex, flattenedData[key]);
     });
 
-    // Launch Puppeteer
+    // Launch Puppeteer headless
     const browser = await puppeteer.launch({
       headless: true, // Run in headless mode
     });
