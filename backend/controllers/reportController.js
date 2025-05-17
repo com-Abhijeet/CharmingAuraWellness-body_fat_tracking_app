@@ -20,7 +20,6 @@ const reportRouter = express.Router();
 
 reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
   try {
-    console.time("request recieved");
     const { customerData, reportData } = req.body;
     // console.log("customerdata", customerData);
     const createdByEmail = req.params.createdByEmail;
@@ -98,11 +97,7 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
     });
     await newReport.save();
 
-    res.status(200).json({ message: "Report created successfully", reportId });
-    console.timeEnd("request recieved");
-
     const data = createPdfData(customerData, { ...reportData, reportId }, "70");
-    console.time("pdf and email");
     const pdfPath = await generatePdfReport(data);
     sendPdfEmail(
       customerEmail,
@@ -111,7 +106,9 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
       pdfPath,
       reportId
     );
-    console.timeEnd("pdf and email");
+    return res
+      .status(200)
+      .json({ message: "Report created successfully", reportId });
   } catch (error) {
     // console.log(error);
     return res.status(500).json({ message: "Internal server error" });
