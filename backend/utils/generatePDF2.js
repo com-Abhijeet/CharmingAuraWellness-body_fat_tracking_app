@@ -56,7 +56,7 @@ export const generatePdfReport = async (data) => {
     //launch browser for puppeteer
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: "/usr/bin/google-chrome", // 👈 Use system-installed Chrome on Render
+      // executablePath: "/usr/bin/google-chrome", // 👈 Use system-installed Chrome on Render
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
