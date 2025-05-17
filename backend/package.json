@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.mjs",
     "dev-start": "nodemon index.mjs",
-    "build": "node node_modules/puppeteer/install.js && mkdir -p ./.cache && mv /app/.cache/puppeteer ./.cache"
+    "postinstall": "npx puppeteer browsers install chrome"
   },
   "author": "",
   "license": "ISC",

@@ -49,9 +49,17 @@ export const generatePdfReport = async (data) => {
     });
 
     // Launch Puppeteer headless
+    // const browser = await puppeteer.launch({
+    //   headless: true, // Run in headless mode
+    // });
+
+    //launch browser for puppeteer
     const browser = await puppeteer.launch({
-      headless: true, // Run in headless mode
+      headless: true,
+      executablePath: "/usr/bin/google-chrome", // 👈 Use system-installed Chrome on Render
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
+
     const page = await browser.newPage();
 
     // Set page content
