@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# exit on error
+# Exit on error
 set -o errexit
 
 npm install
-# npm run build # Uncomment if required
+# npm run build  # Uncomment if your project has a build step
 
-# Store/pull Puppeteer cache with build cache
-if [[ ! -d "$PUPPETEER_CACHE_DIR" ]]; then
-  echo "...Copying Puppeteer Cache from Build Cache" 
-  cp -R "$XDG_CACHE_HOME/puppeteer/" "$PUPPETEER_CACHE_DIR"
-else 
-  echo "...Storing Puppeteer Cache in Build Cache" 
-  cp -R "$PUPPETEER_CACHE_DIR" "$XDG_CACHE_HOME"
+# Puppeteer Chromium caching fix (optional and safe)
+if [[ -d "$XDG_CACHE_HOME/puppeteer" ]]; then
+  echo "...Copying Puppeteer Cache from Build Cache"
+  mkdir -p "$PUPPETEER_CACHE_DIR"
+  cp -R "$XDG_CACHE_HOME/puppeteer/"* "$PUPPETEER_CACHE_DIR" || true
+else
+  echo "...No Puppeteer cache found to copy"
 fi
