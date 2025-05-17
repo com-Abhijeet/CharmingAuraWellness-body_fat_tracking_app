@@ -3,6 +3,7 @@
 set -o errexit
 
 npm install
+npx puppeteer browsers install chrome
 # npm run build  # Uncomment if your project has a build step
 
 # Puppeteer Chromium caching fix (optional and safe)
