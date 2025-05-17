@@ -110,7 +110,7 @@ reportRouter.post("/create-report/:createdByEmail", async (req, res) => {
       .status(200)
       .json({ message: "Report created successfully", reportId });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
