@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import CustomerDetailsForm from "../components/CustomerDetailsForm";
 import BodyFatDetailsForm from "../components/BodyFatDetailsForm";

@@ -33,7 +33,6 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
     reportId: string;
   } | null>(null);
   const [activeReportId, setActiveReportId] = useState("");
-  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const navigate = useNavigate();
 
   const handleRightClick = (event: React.MouseEvent, reportId: string) => {
@@ -70,10 +69,6 @@ const ReportsTable: React.FC<ReportsTableProps> = ({
     resendReportEmail(reportId);
     console.log("Resend email for report ID:", contextMenu?.reportId);
     handleCloseContextMenu();
-  };
-
-  const handleCloseOverlay = () => {
-    setSelectedReport(null);
   };
 
   return (

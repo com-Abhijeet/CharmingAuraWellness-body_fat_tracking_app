@@ -39,9 +39,7 @@ const ReportStatisticsGraph: React.FC<ReportStatisticsGraphProps> = ({
     datasets: [
       {
         label: metric,
-        data: reports.map((report) =>
-          parseFloat(report.bodyFatDetails[metric])
-        ),
+        data: reports.map((report) => report.bodyFatDetails[metric]),
         fill: false,
         backgroundColor: "rgba(75,192,192,0.4)",
         borderColor: "rgba(75,192,192,1)",
