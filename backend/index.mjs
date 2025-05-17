@@ -13,14 +13,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://app.charmingaurawellness.com"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(bodyParser.json());
 
 // Connect to MongoDB
