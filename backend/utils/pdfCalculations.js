@@ -170,7 +170,7 @@ export const restingMetabolismRange = (restingMetabolism, gender) => {
   }
 
   return (restingMetabolism = {
-    value: restingMetabolism.toFixed(4),
+    value: restingMetabolism,
     range: range,
   });
 };
